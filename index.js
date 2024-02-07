@@ -8,6 +8,7 @@ const io = new Server(server, {
   cors: {
     origin: ['https://www.faceclam.com', 'https://faceclam.com', 'http://localhost:3000'],
   },
+  connectionStateRecovery: {}
 });
 const user = require("./controller/user");
 
@@ -23,17 +24,10 @@ io.on("connection", (socket) => {
   console.log("A user connected");
   socket.on("join", async (data) => {
     socket.data.email = data.email;
-    let notifications = null;
     if (!findUser(socket.data.email)) {
       users.push({ email: socket.data.email });
     }
     socket.join(data.email);
-    // socket.to(data.email).emit("notifications", {
-    //   notifications,
-    // });
-    // socket.emit("notifications", {
-    //   notifications
-    // })
     console.log("Users:", users);
   });
 
